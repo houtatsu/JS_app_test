@@ -1,21 +1,77 @@
-const question = "ゲーム市場、最も売れたゲーム機は次のうちどれ？";
-
-const answers = [
-  "スーパーファミコン",
-  "プレイステーション２",
-  "ニンテンドースイッチ", 
-  "ニンテンドーDS"
+const quiz = [
+  {
+    question: 'ゲーム市場、最も売れたゲーム機は次のうちどれ？',
+    answers: [
+      "スーパーファミコン",
+      "プレイステーション2",
+      "ニンテンドースイッチ", 
+      "ニンテンドーDS"
+    ],
+    correct: 'ニンテンドーDS'
+  }, {
+    question: '糸井重里が企画に関わった、任天堂の看板ゲームといえば？',
+    answers: [
+      'MOTHER2',
+      'スーパーマリオブラザーズ3',
+      'スーパードンキーコング',
+      '星のカービィ'
+    ],
+    correct: 'MOTHER2'
+  }, {
+    question: 'ファイナルファンタジーⅣの主人公の名前は？',
+    answers: [
+      'フリオニール',
+      'クラウド',
+      'ティーダ',
+      'セシル'
+    ],
+    correct: 'セシル'
+  }
 ];
 
-const correct = "ニンテンドーDS";
+const quizLength = quiz.length;
+let quizIndex = 0;
+let score = 0;
 
-console.log();
 
-document.getElementById("js-question").textContent = question;
+const $button = document.getElementsByTagName("button");
+const buttonLength = $button.length;
 
-document.getElementsByTagName("button")[0].textContent = answers[0];
-document.getElementsByTagName("button")[1].textContent = answers[1];
-document.getElementsByTagName("button")[2].textContent = answers[2];
-document.getElementsByTagName("button")[3].textContent = answers[3];
+//クイズの問題文、選択肢を定義
+const setupQuize = () => {
+  document.getElementById("js-question").textContent = quiz[quizIndex].question;
+  
+  let buttonIndex = 0;
+  while(buttonIndex < buttonLength){
+    $button[buttonIndex].textContent = quiz[quizIndex].answers[buttonIndex];
+    buttonIndex++;
+  }
+}
+setupQuize();
 
-document.getElementsByTagName("button")[0]
+const clickHandler = (e) => {
+  if (quiz[quizIndex].correct === e.target.textContent) {
+    window.alert('正解！');
+    score++;
+  } else {
+    window.alert('不正解！');
+  }
+  
+  quizIndex++;
+  
+  if (quizIndex < quizLength) {
+    //問題がまだあればこちら
+    setupQuize();
+  } else {
+    //問題がもうなければこちら
+    window.alert('終了！あなたの正解数は' + score + '/' + quizLength + 'です！');
+  }
+}
+// クリックイベント
+let handleIndex = 0;
+while(handleIndex < $button.length) {
+  $button[handleIndex].addEventListener('click', (e) => {
+    clickHandler(e);
+  });
+  handleIndex++;
+}
